@@ -86,13 +86,26 @@ export default function App() {
         <NumResult movies={movies} />
       </Navbar>
       <MainItem>
-        <Box>
+        {/* Now we see how to pass component as EXPLICIT PROPS */}
+
+        <Box element={<MovieList movies={movies} />} />
+        <Box
+          element={
+            <>
+              <Summary watched={watched} />
+              <WatchedMovieList watched={watched} />
+            </>
+          }
+        />
+
+        {/* Passing  the components as children */}
+        {/* <Box>
           <MovieList movies={movies} />
         </Box>
         <Box>
           <Summary watched={watched} />
           <WatchedMovieList watched={watched} />
-        </Box>
+        </Box> */}
       </MainItem>
     </>
   );
@@ -102,7 +115,7 @@ function MainItem({ children }) {
   return <main className="main">{children}</main>;
 }
 
-function Box({ children }) {
+function Box({ element }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -110,7 +123,7 @@ function Box({ children }) {
       <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
         {isOpen ? "–" : "+"}
       </button>
-      {isOpen && children}
+      {isOpen && element}
     </div>
   );
 }
