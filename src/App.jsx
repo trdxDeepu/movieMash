@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar, Logo, NumResult } from "./components/Navbar";
 import Box from "./components/Box";
 import MainItem from "./components/MainItem";
@@ -57,16 +57,19 @@ const tempWatchedData = [
 ];
 
 
-const key = "8f221be1"
 
-fetch(`http://www.omdbapi.com/?apikey=${key}&s=interstellar`)
-.then(response=>response.json())
-.then(data=>console.log(data))
-
+const key = "8f221be1";
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://www.omdbapi.com/?apikey=${key}&s=inception`)
+      .then((response) => response.json())
+      .then((data) => setMovies(data.Search));
+  }, []);
+
   return (
     <>
       <Navbar>
@@ -86,4 +89,3 @@ export default function App() {
     </>
   );
 }
-
