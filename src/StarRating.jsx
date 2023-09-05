@@ -1,39 +1,54 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
-
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const containerStyle = {
   display: "flex",
-  alignItem: "center",
+  alignItems: "center",
   gap: "16px",
 };
 
-const starContainer = {
+const starContainerStyle = {
   display: "flex",
-  gap: "4px",
 };
 
+StarRating.propTypes = {
+  maxRating: PropTypes.number,
+  defaultRating: PropTypes.number,
+  color: PropTypes.string,
+  size: PropTypes.number,
+  messages: PropTypes.array,
+  className: PropTypes.string,
+  onSetRating: PropTypes.func,
+};
 
-const StarRating = ({ maxRating,color='#fcc419',size=48 }) => {
-  const [rating, setRating] = useState(0);
+export default function StarRating({
+  maxRating = 5,
+  color = "#fcc419",
+  size = 48,
+  className = "",
+  messages = [],
+  defaultRating = 0,
+  onSetRating,
+}) {
+  const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
 
   function handleRating(rating) {
     setRating(rating);
+    onSetRating(rating);
   }
 
   const textStyle = {
     lineHeight: "1",
     margin: "0",
     color,
-    fontSize:`${size/1.5}px`
+    fontSize: `${size / 1.5}px`,
   };
-  
 
   return (
-    <div style={containerStyle}>
-      <div style={starContainer}>
+    <div style={containerStyle} className={className}>
+      <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
             key={i}
@@ -46,34 +61,30 @@ const StarRating = ({ maxRating,color='#fcc419',size=48 }) => {
           />
         ))}
       </div>
-      <p style={textStyle}>{tempRating || " "}</p>
+      <p style={textStyle}>
+        {messages.length === maxRating
+          ? messages[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ""}
+      </p>
     </div>
   );
-};
+}
 
-export default StarRating;
+function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
+  const starStyle = {
+    width: `${size}px`,
+    height: `${size}px`,
+    display: "block",
+    cursor: "pointer",
+  };
 
-
-
-function Star({ onRate, full, onHoverIn, onHoverOut,color,size }) {
-  
-    const starStyle = {
-        width:`${size}px ` ,
-        height: `${size}px `,
-        display: "block",
-        cursor: "pointer",
-        
-      };
-  
-    return (
+  return (
     <span
       role="button"
       style={starStyle}
       onClick={onRate}
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
-      
-      
     >
       {full ? (
         <svg
@@ -91,7 +102,6 @@ function Star({ onRate, full, onHoverIn, onHoverOut,color,size }) {
           viewBox="0 0 24 24"
           stroke={color}
         >
-          4
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
