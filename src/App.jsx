@@ -57,8 +57,10 @@ const tempWatchedData = [
 ];
 
 const key = "8f221be1";
+const tempQuery = "Mission Impossible";
 
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -68,8 +70,9 @@ export default function App() {
     async function fetchMovies() {
       try {
         setLoading(true);
+        setError("");
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=inception`
+          `http://www.omdbapi.com/?apikey=${key}&s=${query}`
         );
 
         if (!res.ok) throw new Error("Something went wrong");
@@ -77,7 +80,6 @@ export default function App() {
         const data = await res.json();
         if (data.Response === "False") throw new Error("Movie not Found");
         setMovies(data.Search);
-        console.log(data);
       } catch (err) {
         console.log(err.message);
         setError(err.message);
@@ -85,14 +87,19 @@ export default function App() {
         setLoading(false);
       }
     }
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
     fetchMovies();
-  }, []);
+  }, [query]);
 
   return (
     <>
       <Navbar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResult movies={movies} />
       </Navbar>
       <MainItem>
