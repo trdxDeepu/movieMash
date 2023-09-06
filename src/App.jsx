@@ -56,18 +56,24 @@ const tempWatchedData = [
   },
 ];
 
-
-
 const key = "8f221be1";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch(`http://www.omdbapi.com/?apikey=${key}&s=inception`)
-      .then((response) => response.json())
-      .then((data) => setMovies(data.Search));
+    async function fetchMovies() {
+      setLoading(true)
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${key}&s=inception`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+      setLoading(false)
+    }
+    fetchMovies()
   }, []);
 
   return (
@@ -79,7 +85,7 @@ export default function App() {
       </Navbar>
       <MainItem>
         <Box>
-          <MovieList movies={movies} />
+         {loading ? <Loader/> : < MovieList movies={movies} />}
         </Box>
         <Box>
           <Summary watched={watched} />
@@ -88,4 +94,7 @@ export default function App() {
       </MainItem>
     </>
   );
+}
+function Loader(){
+  return <p className="loader">Loading</p>
 }
