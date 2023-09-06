@@ -56,50 +56,23 @@ const tempWatchedData = [
   },
 ];
 
-const key = "8f221be1";
+
 const tempQuery = "Mission Impossible";
 
 export default function App() {
-  const [query, setQuery] = useState("");
+ 
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetchMovies() {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=${query}`
-        );
-
-        if (!res.ok) throw new Error("Something went wrong");
-
-        const data = await res.json();
-        if (data.Response === "False") throw new Error("Movie not Found");
-        setMovies(data.Search);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    if (query.length < 3) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-    fetchMovies();
-  }, [query]);
+  
 
   return (
     <>
       <Navbar>
         <Logo />
-        <Search query={query} setQuery={setQuery} />
+        <Search setMovies={setMovies} setError={setError} setLoading={setLoading} />
         <NumResult movies={movies} />
       </Navbar>
       <MainItem>
