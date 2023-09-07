@@ -19,6 +19,7 @@ export default function Search({ setMovies, setError, setLoading }) {
         const data = await res.json();
         if (data.Response === "False") throw new Error("Movie not Found");
         setMovies(data.Search);
+        console.log(data.Search);
       } catch (err) {
         console.log(err.message);
         setError(err.message);

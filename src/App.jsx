@@ -9,7 +9,6 @@ import { WatchedMovieList, WatchedMovie } from "./components/WatchedMovieList";
 import Summary from "./components/Summary";
 import Search from "./components/Search";
 
-
 const tempQuery = "Mission Impossible";
 
 export default function App() {
@@ -17,6 +16,7 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedID, setSelectedID] = useState("tt0145487");
 
   return (
     <>
@@ -36,12 +36,22 @@ export default function App() {
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          <Summary watched={watched} />
-          <WatchedMovieList watched={watched} />
+          {selectedID ? (
+            <MovieDetails selectedID={selectedID} />
+          ) : (
+            <>
+              <Summary watched={watched} />
+              <WatchedMovieList watched={watched} />
+            </>
+          )}
         </Box>
       </MainItem>
     </>
   );
+}
+
+function MovieDetails({ selectedID }) {
+  return <div className="details">ewrger</div>;
 }
 
 function ErrorMessage({ message }) {
