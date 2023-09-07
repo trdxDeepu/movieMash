@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-keys */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
@@ -10,7 +11,7 @@ const key = "8f221be1";
 
 function MovieList({ movies, setSelectedID }) {
   function handleSelected(id) {
-    setSelectedID((selectedID) => (id === selectedID ? null : id));
+    setSelectedID((selectedId) => (id === selectedId ? null : id));
   }
 
   return (
@@ -41,9 +42,15 @@ function Movie({ movie, onSelected }) {
   );
 }
 
-function MovieDetails({ selectedID, setSelectedID }) {
+function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
+
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedID);
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectedID
+  )?.userRating;
 
   const {
     Title: title,
@@ -58,10 +65,14 @@ function MovieDetails({ selectedID, setSelectedID }) {
     Genre: genre,
   } = movie;
 
-  console.log(title, year, actors);
-
   function handleCloseMovie() {
     setSelectedID(null);
+  }
+
+  console.log(watched)
+
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched, movie]);
   }
 
   useEffect(() => {
@@ -76,6 +87,21 @@ function MovieDetails({ selectedID, setSelectedID }) {
     }
     getMovieDetails();
   }, [selectedID]);
+
+  function handleAdd() {
+    const newWatchedMovie = {
+      imdbID: selectedID,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+      userRating,
+    };
+    console.log(newWatchedMovie.userRating);
+    handleAddWatched(newWatchedMovie);
+    handleCloseMovie();
+  }
 
   return (
     <div className="details">
@@ -101,8 +127,25 @@ function MovieDetails({ selectedID, setSelectedID }) {
             </div>
           </header>
           <section>
-            <div className="rating">
-              <StarRating maxRating={10} size={24} />
+          <div className="rating">
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You rated with movie {watchedUserRating} <span>⭐️</span>
+                </p>
+              )}
             </div>
 
             <p>

@@ -11,8 +11,6 @@ import Summary from "./components/Summary";
 import Search from "./components/Search";
 import BeatLoader from "react-spinners/BeatLoader";
 
-
-
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
@@ -20,6 +18,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [selectedID, setSelectedID] = useState(null);
 
+ 
   return (
     <>
       <Navbar>
@@ -33,7 +32,7 @@ export default function App() {
       </Navbar>
       <MainItem>
         <Box>
-          {loading &&  <BeatLoader color="#626665" className="loader" />}
+          {loading && <BeatLoader color="#626665" className="loader" />}
           {!loading && !error && (
             <MovieList movies={movies} setSelectedID={setSelectedID} />
           )}
@@ -44,11 +43,13 @@ export default function App() {
             <MovieDetails
               selectedID={selectedID}
               setSelectedID={setSelectedID}
+              watched={watched}
+              setWatched={setWatched}
             />
           ) : (
             <>
               <Summary watched={watched} />
-              <WatchedMovieList watched={watched} />
+              <WatchedMovieList watched={watched} setWatched={setWatched} />
             </>
           )}
         </Box>
@@ -65,4 +66,3 @@ function ErrorMessage({ message }) {
     </p>
   );
 }
-
