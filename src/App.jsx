@@ -9,8 +9,9 @@ import { MovieList, MovieDetails } from "./components/MovieList";
 import { WatchedMovieList } from "./components/WatchedMovieList";
 import Summary from "./components/Summary";
 import Search from "./components/Search";
+import BeatLoader from "react-spinners/BeatLoader";
 
-const tempQuery = "Mission Impossible";
+
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -32,7 +33,7 @@ export default function App() {
       </Navbar>
       <MainItem>
         <Box>
-          {loading && <Loader />}
+          {loading &&  <BeatLoader color="#626665" className="loader" />}
           {!loading && !error && (
             <MovieList movies={movies} setSelectedID={setSelectedID} />
           )}
@@ -65,6 +66,3 @@ function ErrorMessage({ message }) {
   );
 }
 
-function Loader() {
-  return <p className="loader">Loading</p>;
-}
