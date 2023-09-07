@@ -76,6 +76,9 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
   }
 
   useEffect(() => {
+
+    
+
     async function getMovieDetails() {
       setIsLoading(true);
       const res = await fetch(
@@ -106,6 +109,10 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
   useEffect(()=>{
     if(!title) return
     document.title = `Movie | ${title}`
+    return function() {
+      document.title = "MovieMash"
+      console.log("clean up funtion")
+    }
   },[title])
 
   return (
