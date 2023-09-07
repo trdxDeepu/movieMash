@@ -1,11 +1,12 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { Navbar, Logo, NumResult } from "./components/Navbar";
 import Box from "./components/Box";
 import MainItem from "./components/MainItem";
-import { MovieList, Movie } from "./components/MovieList";
-import { WatchedMovieList, WatchedMovie } from "./components/WatchedMovieList";
+import { MovieList, MovieDetails } from "./components/MovieList";
+import { WatchedMovieList } from "./components/WatchedMovieList";
 import Summary from "./components/Summary";
 import Search from "./components/Search";
 
@@ -32,12 +33,17 @@ export default function App() {
       <MainItem>
         <Box>
           {loading && <Loader />}
-          {!loading && !error && <MovieList movies={movies} setSelectedID={setSelectedID} />}
+          {!loading && !error && (
+            <MovieList movies={movies} setSelectedID={setSelectedID} />
+          )}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
           {selectedID ? (
-            <MovieDetails selectedID={selectedID} />
+            <MovieDetails
+              selectedID={selectedID}
+              setSelectedID={setSelectedID}
+            />
           ) : (
             <>
               <Summary watched={watched} />
@@ -48,12 +54,6 @@ export default function App() {
       </MainItem>
     </>
   );
-}
-
-
-
-function MovieDetails({ selectedID }) {
-  return <div className="details">{selectedID}</div>;
 }
 
 function ErrorMessage({ message }) {

@@ -1,9 +1,14 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 function MovieList({ movies, setSelectedID }) {
+  
+  
   function handleSelected(id) {
     setSelectedID(id);
   }
+
   return (
     <ul className="list">
       {movies?.map((movie) => (
@@ -32,4 +37,18 @@ function Movie({ movie, onSelected }) {
   );
 }
 
-export { MovieList, Movie };
+function MovieDetails({ selectedID, setSelectedID }) {
+  function handleCloseMovie() {
+    setSelectedID(null);
+  }
+  return (
+    <div className="details">
+      <button className="btn-back" onClick={handleCloseMovie}>
+        &larr;
+      </button>
+      {selectedID}
+    </div>
+  );
+}
+
+export { MovieList, Movie, MovieDetails };
