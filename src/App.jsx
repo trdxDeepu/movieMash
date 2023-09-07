@@ -16,7 +16,7 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [selectedID, setSelectedID] = useState("tt0145487");
+  const [selectedID, setSelectedID] = useState(null);
 
   return (
     <>
@@ -32,7 +32,7 @@ export default function App() {
       <MainItem>
         <Box>
           {loading && <Loader />}
-          {!loading && !error && <MovieList movies={movies} />}
+          {!loading && !error && <MovieList movies={movies} setSelectedID={setSelectedID} />}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
@@ -50,8 +50,10 @@ export default function App() {
   );
 }
 
+
+
 function MovieDetails({ selectedID }) {
-  return <div className="details">ewrger</div>;
+  return <div className="details">{selectedID}</div>;
 }
 
 function ErrorMessage({ message }) {
