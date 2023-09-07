@@ -2,6 +2,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
+import { useEffect, useState } from "react";
+import StarRating from "./StarRating";
+
+const key = "8f221be1";
+
 function MovieList({ movies, setSelectedID }) {
   function handleSelected(id) {
     setSelectedID((selectedID) => (id === selectedID ? null : id));
@@ -36,15 +41,65 @@ function Movie({ movie, onSelected }) {
 }
 
 function MovieDetails({ selectedID, setSelectedID }) {
+  const [movie, setMovie] = useState({});
+
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie;
+
+  console.log(title, year, actors);
+
   function handleCloseMovie() {
     setSelectedID(null);
   }
+
+  useEffect(() => {
+    async function getMovieDetails() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${key}&i=${selectedID}`
+      );
+      const data = await res.json();
+      setMovie(data);
+    }
+    getMovieDetails();
+  }, []);
+
   return (
     <div className="details">
-      <button className="btn-back" onClick={handleCloseMovie}>
-        &larr;
-      </button>
-      {selectedID}
+      <header>
+        <button className="btn-back" onClick={handleCloseMovie}>
+          &larr;
+        </button>
+        <img src={poster} alt={`Poster of ${movie} movie.`} />
+        <div className="details-overview">
+          <h2 className="title">{title}</h2>
+          <p>
+            {released} &bull; {runtime}
+          </p>
+          <p>{genre}</p>
+          <p>
+            <span>⭐</span>
+            {imdbRating} IMDB rating
+          </p>
+        </div>
+      </header>
+      <section>
+        <StarRating/>
+        <p>
+          <em>{plot}</em>
+        </p>
+        <p>Straing : {actors}</p>
+        <p>Directed by : {director}</p>
+      </section>
     </div>
   );
 }
