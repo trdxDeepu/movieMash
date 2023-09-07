@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-dupe-keys */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
@@ -69,16 +70,13 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
     setSelectedID(null);
   }
 
-  console.log(watched)
+  console.log(watched);
 
   function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
   }
 
   useEffect(() => {
-
-    
-
     async function getMovieDetails() {
       setIsLoading(true);
       const res = await fetch(
@@ -106,14 +104,28 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
     handleCloseMovie();
   }
 
-  useEffect(()=>{
-    if(!title) return
-    document.title = `Movie | ${title}`
-    return function() {
-      document.title = "MovieMash"
-      console.log("clean up funtion")
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title}`;
+    return function () {
+      document.title = "MovieMash";
+      console.log("clean up funtion");
+    };
+  }, [title]);
+
+  useEffect(() => {
+    function callback(e) {
+      if (e.code === "Escape") {
+        handleCloseMovie();
+        console.log("Your Escape  Worked");
+      }
     }
-  },[title])
+
+    document.addEventListener("keydown", callback);
+    return function () {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [handleCloseMovie]);
 
   return (
     <div className="details">
@@ -139,7 +151,7 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
             </div>
           </header>
           <section>
-          <div className="rating">
+            <div className="rating">
               {!isWatched ? (
                 <>
                   <StarRating

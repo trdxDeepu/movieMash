@@ -17,7 +17,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedID, setSelectedID] = useState(null);
-
+  
+ 
  
   return (
     <>
@@ -27,6 +28,7 @@ export default function App() {
           setMovies={setMovies}
           setError={setError}
           setLoading={setLoading}
+          setSelectedID={setSelectedID}
         />
         <NumResult movies={movies} />
       </Navbar>

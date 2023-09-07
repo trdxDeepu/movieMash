@@ -1,11 +1,17 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 
 const key = "8f221be1";
-export default function Search({ setMovies, setError, setLoading }) {
+export default function Search({ setMovies, setError, setLoading, setSelectedID }) {
   const [query, setQuery] = useState("");
+
+  function handleCloseMovie() {
+    setSelectedID(null);
+  }
+
   useEffect(() => {
     const controller = new AbortController();
     async function fetchMovies() {
@@ -37,6 +43,7 @@ export default function Search({ setMovies, setError, setLoading }) {
       setError("");
       return;
     }
+    handleCloseMovie()
     fetchMovies();
 
     return function () {
