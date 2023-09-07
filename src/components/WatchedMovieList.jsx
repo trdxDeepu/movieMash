@@ -3,7 +3,7 @@
 
 function WatchedMovieList({ watched, setWatched }) {
   function handleDelete(id) {
-    setWatched((watched) => watched.filer((movie) => movie.imdbID !== id));
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
   return (
     <ul className="list">
