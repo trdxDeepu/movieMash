@@ -3,10 +3,8 @@
 /* eslint-disable react/prop-types */
 
 function MovieList({ movies, setSelectedID }) {
-  
-  
   function handleSelected(id) {
-    setSelectedID(id);
+    setSelectedID((selectedID) => (id === selectedID ? null : id));
   }
 
   return (
