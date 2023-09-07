@@ -5,13 +5,18 @@
 import { useState, useEffect } from "react";
 
 const key = "8f221be1";
-export default function Search({ setMovies, setError, setLoading, setSelectedID }) {
+export default function Search({
+  setMovies,
+  setError,
+  setLoading,
+  setSelectedID,
+}) {
   const [query, setQuery] = useState("");
 
   function handleCloseMovie() {
     setSelectedID(null);
   }
-
+ 
   useEffect(() => {
     const controller = new AbortController();
     async function fetchMovies() {
@@ -28,7 +33,7 @@ export default function Search({ setMovies, setError, setLoading, setSelectedID 
         const data = await res.json();
         if (data.Response === "False") throw new Error("Movie not Found");
         setMovies(data.Search);
-       setError("")
+        setError("");
       } catch (err) {
         console.log(err.message);
         if (err.name !== "AbortError") {
@@ -43,7 +48,7 @@ export default function Search({ setMovies, setError, setLoading, setSelectedID 
       setError("");
       return;
     }
-    handleCloseMovie()
+    handleCloseMovie();
     fetchMovies();
 
     return function () {

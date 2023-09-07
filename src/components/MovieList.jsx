@@ -77,6 +77,10 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
   }
 
   useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
+
+  useEffect(() => {
     async function getMovieDetails() {
       setIsLoading(true);
       const res = await fetch(

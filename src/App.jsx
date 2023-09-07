@@ -13,14 +13,17 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  // const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedID, setSelectedID] = useState(null);
-  
- 
- 
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
+
   return (
+    
     <>
       <Navbar>
         <Logo />
