@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
 import { BeatLoader } from "react-spinners";
 
@@ -72,6 +72,12 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
 
   console.log(watched);
 
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if (userRating) countRef.current++;
+  }, [userRating ]);
+
   function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
   }
@@ -102,6 +108,7 @@ function MovieDetails({ selectedID, setSelectedID, watched, setWatched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecision: countRef.current,
     };
     console.log(newWatchedMovie.userRating);
     handleAddWatched(newWatchedMovie);
