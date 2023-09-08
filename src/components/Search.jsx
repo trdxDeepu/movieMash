@@ -4,7 +4,8 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from "react";
 
-const key = "8f221be1";
+const key = "8f221be1"
+
 export default function Search({
   setMovies,
   setError,
@@ -12,25 +13,10 @@ export default function Search({
   setSelectedID,
 }) {
   const [query, setQuery] = useState("");
+ 
 
   const inputEl = useRef(null);
 
-  useEffect(() => {
-    function callBack(e) {
-      if (document.activeElement === inputEl.current) return;
-
-      if (e.code === "Enter") {
-        inputEl.current.focus();
-        setQuery("");
-      }
-    }
-    document.addEventListener("keydown", callBack);
-    return () => document.addEventListener("keydown", callBack);
-  }, [setQuery]);
-
-  function handleCloseMovie() {
-    setSelectedID(null);
-  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -63,13 +49,30 @@ export default function Search({
       setError("");
       return;
     }
-    handleCloseMovie();
+    // handleCloseMovie();
     fetchMovies();
 
     return function () {
       controller.abort();
     };
   }, [query]);
+  useEffect(() => {
+    function callBack(e) {
+      if (document.activeElement === inputEl.current) return;
+
+      if (e.code === "Enter") {
+        inputEl.current.focus();
+        setQuery("");
+      }
+    }
+    document.addEventListener("keydown", callBack);
+    return () => document.addEventListener("keydown", callBack);
+  }, [setQuery]);
+
+  function handleCloseMovie() {
+    setSelectedID(null);
+  }
+
   return (
     <input
       className="search"
