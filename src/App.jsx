@@ -13,6 +13,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState("");
   // const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,7 +24,7 @@ export default function App() {
   });
 
   return (
-    
+     
     <>
       <Navbar>
         <Logo />
@@ -32,6 +33,7 @@ export default function App() {
           setError={setError}
           setLoading={setLoading}
           setSelectedID={setSelectedID}
+         
         />
         <NumResult movies={movies} />
       </Navbar>

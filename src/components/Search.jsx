@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const key = "8f221be1";
 export default function Search({
@@ -13,10 +13,18 @@ export default function Search({
 }) {
   const [query, setQuery] = useState("");
 
+  const inputEl = useRef(null);
+
+  useEffect(() => {
+      inputEl.current.focus()
+    
+  }, []);
+
   function handleCloseMovie() {
     setSelectedID(null);
   }
- 
+
+
   useEffect(() => {
     const controller = new AbortController();
     async function fetchMovies() {
@@ -62,6 +70,7 @@ export default function Search({
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl }
     />
   );
 }
